@@ -1,0 +1,42 @@
+# Core
+python-dotenv
+pydantic
+typing-extensions
+
+# Web App
+streamlit
+fastapi
+uvicorn
+
+# LangChain & LangGraph
+langchain
+langgraph
+langchain-core
+langchain-google-genai
+
+# Google Gemini Model
+google-generativeai
+
+# Data & Financial APIs
+yfinance
+requests
+
+# NLP & Sentiment
+transformers
+torch
+sentencepiece
+
+# Forecasting Models
+numpy
+pandas
+scikit-learn
+statsmodels
+tensorflow
+
+# Visualization
+plotly
+matplotlib
+
+# Optional (for dev & debugging)
+tqdm
+python-multipart

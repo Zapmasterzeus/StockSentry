@@ -1,0 +1,29 @@
+.env
+# Environment files
+.env
+.venv/
+
+# VSCode settings
+.vscode/
+
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment folders (alternative names)
+env/
+venv/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Optional: Ignore testing/coverage files
+.coverage
+.pytest_cache/
+htmlcov/
