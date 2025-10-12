@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+venv/
+node_modules/
+charts/*
+.env
+example_output.txt
+README.md
+package*.json
+start*.bat
+requirements.txt

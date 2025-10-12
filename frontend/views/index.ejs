@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StockSentry - AI Financial Research</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --ocean-blue: #0F4C75;
+            --light-blue: #3282B8;
+            --teal: #0F4C75;
+            --coral: #FF6B6B;
+            --mint: #4ECDC4;
+            --cream: #F8F9FA;
+            --slate: #495057;
+            --success: #28A745;
+            --warning: #FFC107;
+        }
+        .ocean-gradient-bg {
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--light-blue) 50%, var(--mint) 100%);
+        }
+        .ocean-blue-bg {
+            background-color: var(--ocean-blue);
+        }
+        .light-blue-bg {
+            background-color: var(--light-blue);
+        }
+        .coral-bg {
+            background-color: var(--coral);
+        }
+        .mint-bg {
+            background-color: var(--mint);
+        }
+        .cream-bg {
+            background-color: var(--cream);
+        }
+        .slate-bg {
+            background-color: var(--slate);
+        }
+        .ocean-blue-text {
+            color: var(--ocean-blue);
+        }
+        .light-blue-text {
+            color: var(--light-blue);
+        }
+        .coral-text {
+            color: var(--coral);
+        }
+        .mint-text {
+            color: var(--mint);
+        }
+        .cream-text {
+            color: var(--cream);
+        }
+        .slate-text {
+            color: var(--slate);
+        }
+        .card-shadow {
+            box-shadow: 0 20px 25px -5px rgba(15, 76, 117, 0.1), 0 10px 10px -5px rgba(15, 76, 117, 0.04);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--coral) 0%, #e55a5a 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #e55a5a 0%, var(--coral) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+    </style>
+</head>
+<body class="ocean-gradient-bg min-h-screen flex items-center justify-center">
+    <div class="container mx-auto p-4 max-w-2xl">
+        <div class="bg-white rounded-2xl card-shadow p-8 border border-opacity-20" style="border-color: var(--slate);">
+            <div class="text-center mb-8">
+                <h1 class="text-5xl font-bold ocean-blue-text mb-3">
+                    <i class="fas fa-chart-line coral-text mr-3"></i> StockSentry
+                </h1>
+                <p class="slate-text text-lg">AI-Powered Financial Research & Analysis</p>
+            </div>
+            
+            <% if (typeof error !== 'undefined') { %>
+                <div class="mint-bg border border-opacity-30 rounded-xl p-4 mb-6" style="border-color: var(--coral);">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle coral-text mr-3"></i>
+                        <p class="coral-text font-medium"><%= error %></p>
+                    </div>
+                </div>
+            <% } %>
+            
+            <form action="/analyze" method="POST" class="space-y-6">
+                <div class="relative">
+                    <label for="ticker" class="block text-sm font-semibold ocean-blue-text mb-3">
+                        Stock Ticker Symbol
+                    </label>
+                    <input 
+                        type="text" 
+                        id="ticker"
+                        name="ticker" 
+                        placeholder="Enter ticker (e.g., TSLA, AAPL, MSFT)" 
+                        class="w-full p-4 border-2 rounded-xl focus:ring-2 focus:ring-opacity-50 transition-all duration-300"
+                        style="border-color: var(--slate);"
+                        autocomplete="off"
+                        required
+                    >
+                    <div id="ticker-dropdown" class="absolute z-10 w-full mt-1 bg-white rounded-xl shadow-lg border border-opacity-20 hidden" style="border-color: var(--slate); max-height: 200px; overflow-y: auto;">
+                        <!-- Dropdown items will be populated here -->
+                    </div>
+                </div>
+                
+                <button 
+                    type="submit" 
+                    class="w-full btn-primary text-white font-bold py-4 px-8 rounded-xl flex items-center justify-center text-lg"
+                >
+                    <i class="fas fa-search mr-3"></i>
+                    Analyze Stock
+                </button>
+            </form>
+            
+            <div class="mt-8 text-center">
+                <div class="flex justify-center space-x-6 text-sm slate-text">
+                    <span class="flex items-center">
+                        <i class="fas fa-brain coral-text mr-2"></i>Made by Sigan, for Flipr Hackathon 2025
+                    </span>
+                    <span class="flex items-center">
+                        <i class="fas fa-clock coral-text mr-2"></i>Real-time Data
+                    </span>
+                    <span class="flex items-center">
+                        <i class="fas fa-chart-line coral-text mr-2"></i>Multi-Agent
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Popular stock tickers for autocomplete
+        const popularTickers = [
+            { symbol: 'AAPL', name: 'Apple Inc.' },
+            { symbol: 'MSFT', name: 'Microsoft Corporation' },
+            { symbol: 'GOOGL', name: 'Alphabet Inc. Class A' },
+            { symbol: 'AMZN', name: 'Amazon.com Inc.' },
+            { symbol: 'TSLA', name: 'Tesla Inc.' },
+            { symbol: 'META', name: 'Meta Platforms Inc.' },
+            { symbol: 'NVDA', name: 'NVIDIA Corporation' },
+            { symbol: 'NFLX', name: 'Netflix Inc.' },
+            { symbol: 'AMD', name: 'Advanced Micro Devices' },
+            { symbol: 'INTC', name: 'Intel Corporation' },
+            { symbol: 'CRM', name: 'Salesforce Inc.' },
+            { symbol: 'ADBE', name: 'Adobe Inc.' },
+            { symbol: 'PYPL', name: 'PayPal Holdings Inc.' },
+            { symbol: 'UBER', name: 'Uber Technologies Inc.' },
+            { symbol: 'SPOT', name: 'Spotify Technology S.A.' },
+            { symbol: 'ZM', name: 'Zoom Video Communications' },
+            { symbol: 'SQ', name: 'Block Inc.' },
+            { symbol: 'ROKU', name: 'Roku Inc.' },
+            { symbol: 'SNAP', name: 'Snap Inc.' },
+            { symbol: 'TWTR', name: 'Twitter Inc.' },
+            { symbol: 'DIS', name: 'The Walt Disney Company' },
+            { symbol: 'NKE', name: 'Nike Inc.' },
+            { symbol: 'WMT', name: 'Walmart Inc.' },
+            { symbol: 'JPM', name: 'JPMorgan Chase & Co.' },
+            { symbol: 'BAC', name: 'Bank of America Corporation' },
+            { symbol: 'V', name: 'Visa Inc.' },
+            { symbol: 'MA', name: 'Mastercard Incorporated' },
+            { symbol: 'JNJ', name: 'Johnson & Johnson' },
+            { symbol: 'PG', name: 'Procter & Gamble Company' },
+            { symbol: 'KO', name: 'The Coca-Cola Company' }
+        ];
+
+        const tickerInput = document.getElementById('ticker');
+        const dropdown = document.getElementById('ticker-dropdown');
+        let selectedIndex = -1;
+
+        let searchTimeout = null;
+
+        // Debounced search function
+        function debounce(func, wait) {
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(searchTimeout);
+                    func(...args);
+                };
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(later, wait);
+            };
+        }
+
+        // Search via backend API
+        async function searchTickers(query) {
+            if (query.length < 1) {
+                dropdown.classList.add('hidden');
+                return;
+            }
+
+            try {
+                // Show loading state
+                dropdown.innerHTML = `
+                    <div class="px-4 py-3 text-center slate-text">
+                        <i class="fas fa-spinner fa-spin coral-text mr-2"></i>
+                        Searching...
+                    </div>
+                `;
+                dropdown.classList.remove('hidden');
+
+                // Call backend search endpoint
+                const response = await fetch(`http://localhost:8000/search-tickers?q=${encodeURIComponent(query)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Search failed');
+                }
+
+                const data = await response.json();
+                const tickers = data.tickers || [];
+
+                if (tickers.length === 0) {
+                    dropdown.innerHTML = `
+                        <div class="px-4 py-3 text-center slate-text">
+                            <i class="fas fa-search coral-text mr-2"></i>
+                            No results found
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Populate dropdown with results
+                dropdown.innerHTML = tickers.map((ticker, index) => `
+                    <div class="dropdown-item px-4 py-3 cursor-pointer hover:bg-opacity-10 transition-colors duration-200 border-b border-opacity-10 last:border-b-0" 
+                         style="border-color: var(--slate);" 
+                         data-symbol="${ticker.symbol}" 
+                         data-index="${index}">
+                        <div class="flex justify-between items-center">
+                            <div class="flex-1">
+                                <div class="font-bold coral-text">${ticker.symbol}</div>
+                                <div class="text-sm slate-text">${ticker.name}</div>
+                                ${ticker.exchange ? `<div class="text-xs slate-text opacity-75">${ticker.exchange}</div>` : ''}
+                            </div>
+                            <div class="text-right ml-2">
+                                ${ticker.price ? `<div class="text-sm font-semibold coral-text">$${ticker.price}</div>` : ''}
+                                ${ticker.change ? `<div class="text-xs ${ticker.change >= 0 ? 'text-green-600' : 'text-red-600'}">${ticker.change >= 0 ? '+' : ''}${ticker.change}</div>` : ''}
+                            </div>
+                            <i class="fas fa-arrow-right coral-text opacity-50 ml-2"></i>
+                        </div>
+                    </div>
+                `).join('');
+
+                dropdown.classList.remove('hidden');
+                selectedIndex = -1;
+
+            } catch (error) {
+                console.error('Search error:', error);
+                // Fallback to local search
+                const matches = popularTickers.filter(ticker => 
+                    ticker.symbol.startsWith(query.toUpperCase()) || 
+                    ticker.name.toUpperCase().includes(query.toUpperCase())
+                ).slice(0, 8);
+
+                if (matches.length === 0) {
+                dropdown.innerHTML = `
+                    <div class="px-4 py-3 text-center slate-text">
+                        <i class="fas fa-exclamation-triangle coral-text mr-2"></i>
+                        Search failed. Try a popular ticker.
+                    </div>
+                `;
+                    return;
+                }
+
+                // Show fallback results
+                dropdown.innerHTML = matches.map((ticker, index) => `
+                    <div class="dropdown-item px-4 py-3 cursor-pointer hover:bg-opacity-10 transition-colors duration-200 border-b border-opacity-10 last:border-b-0" 
+                         style="border-color: var(--slate);" 
+                         data-symbol="${ticker.symbol}" 
+                         data-index="${index}">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="font-bold coral-text">${ticker.symbol}</div>
+                                <div class="text-sm slate-text">${ticker.name}</div>
+                            </div>
+                            <i class="fas fa-arrow-right coral-text opacity-50"></i>
+                        </div>
+                    </div>
+                `).join('');
+
+                dropdown.classList.remove('hidden');
+                selectedIndex = -1;
+            }
+        }
+
+        // Debounced search function (300ms delay)
+        const debouncedSearch = debounce(searchTickers, 300);
+
+        tickerInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            debouncedSearch(query);
+        });
+
+        // Handle keyboard navigation
+        tickerInput.addEventListener('keydown', function(e) {
+            const items = dropdown.querySelectorAll('.dropdown-item');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                updateSelection(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = Math.max(selectedIndex - 1, -1);
+                updateSelection(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (selectedIndex >= 0 && items[selectedIndex]) {
+                    selectTicker(items[selectedIndex]);
+                }
+            } else if (e.key === 'Escape') {
+                dropdown.classList.add('hidden');
+                selectedIndex = -1;
+            }
+        });
+
+        // Handle mouse clicks on dropdown items
+        dropdown.addEventListener('click', function(e) {
+            const item = e.target.closest('.dropdown-item');
+            if (item) {
+                selectTicker(item);
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!tickerInput.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+                selectedIndex = -1;
+            }
+        });
+
+        function updateSelection(items) {
+            items.forEach((item, index) => {
+                if (index === selectedIndex) {
+                    item.style.backgroundColor = 'rgba(78, 205, 196, 0.3)';
+                } else {
+                    item.style.backgroundColor = 'transparent';
+                }
+            });
+        }
+
+        function selectTicker(item) {
+            const symbol = item.getAttribute('data-symbol');
+            tickerInput.value = symbol;
+            dropdown.classList.add('hidden');
+            selectedIndex = -1;
+        }
+    </script>
+</body>
+</html>
