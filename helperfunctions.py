@@ -2,6 +2,8 @@ import requests
 import yfinance as yf
 import pandas as pd
 import json
+
+
 def find_ticker(user_query: str):
     try:
         # Hit Yahoo Finance public search endpoint directly
@@ -20,6 +22,7 @@ def find_ticker(user_query: str):
     except Exception as e:
         print("Error:", e)
     return None, None
+
 
 def get_financial_json(ticker_symbol: str):
     try:
@@ -59,12 +62,13 @@ def get_financial_json(ticker_symbol: str):
             "Debt_to_Equity": debt_to_equity,
             "Revenue_Trend": revenue_trend,
             "Profit_Trend": profit_trend,
-            "Profit_Margin_Trend": profit_margin_trend
+            "Profit_Margin_Trend": profit_margin_trend,
         }
 
     except Exception as e:
         return {"error": str(e)}
+
+
 # print(get_financial_json("NVDA"))
 
-# print(find_ticker("nvidia"))   
-
+# print(find_ticker("nvidia"))

@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 def get_google_news(query, num_results=5):
     serpapi_key = os.getenv("SERPAPI_KEY")
     if not serpapi_key:
@@ -16,7 +17,7 @@ def get_google_news(query, num_results=5):
         "gl": "us",
         "api_key": serpapi_key,
         "num": num_results,
-        "no_cache": "true"
+        "no_cache": "true",
     }
 
     response = requests.get("https://serpapi.com/search", params=params)
@@ -25,20 +26,19 @@ def get_google_news(query, num_results=5):
 
     articles = []
     for item in data.get("news_results", [])[:num_results]:
-        articles.append({
-            "title": item.get("title"),
-            "link": item.get("link"),
-            "snippet": item.get("snippet"),
-            "source": item.get("source", {}).get("name"),
-            "date": item.get("date"),
-            "thumbnail": item.get("thumbnail")
-        })
+        articles.append(
+            {
+                "title": item.get("title"),
+                "link": item.get("link"),
+                "snippet": item.get("snippet"),
+                "source": item.get("source", {}).get("name"),
+                "date": item.get("date"),
+                "thumbnail": item.get("thumbnail"),
+            }
+        )
 
-    return {
-        "query": query,
-        "count": len(articles),
-        "news": articles
-    }
+    return {"query": query, "count": len(articles), "news": articles}
+
 
 if __name__ == "__main__":
     print(get_google_news("Nvidia stock"))

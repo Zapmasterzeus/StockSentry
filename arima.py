@@ -106,7 +106,7 @@ def arima_predict(ticker: str, forecast_days: int = 15):
             "forecast_model": "ARIMA(5,1,0)",
             "forecast_days": forecast_days,
             "forecast_values_arima": forecast_values,
-            "forecast_values_lstm": result["forecast_values"],  # 👈 from LSTM json
+            "forecast_values_lstm": result["forecast_values"],
             "image_path": image_path,
             "summary_arima": {
                 "latest_price": last_price,
@@ -115,7 +115,7 @@ def arima_predict(ticker: str, forecast_days: int = 15):
                     ((last_forecast - last_price) / last_price) * 100, 2
                 ),
             },
-            "summary_lstm": result["summary"],  # 👈 directly inject LSTM summary
+            "summary_lstm": result["summary"],  
         }
 
     except Exception as e:

@@ -6,7 +6,7 @@ from langgraph.graph import StateGraph, END
 from langchain_google_genai import ChatGoogleGenerativeAI
 from testingguardrail import querying
 from kbhelper import is_out_of_knowledge_base
-from dspyrag.ver5 import ask_question,provide_feedback
+from dspyrag.ver5 import ask_question, provide_feedback
 
 
 load_dotenv()
@@ -16,7 +16,7 @@ llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash",
     google_api_key=api_key,
     temperature=0.7,
-    model_kwargs={"streaming": False}
+    model_kwargs={"streaming": False},
 )
 
 
@@ -24,13 +24,12 @@ class ChatState(BaseModel):
     input: str
     output: Optional[str] = ""
     ismath: bool = False
-    llmcheckmath:bool= False
+    llmcheckmath: bool = False
     score: float = 0.0
-    counter:int=0
-    is_present_in_kb:bool=False
+    counter: int = 0
+    is_present_in_kb: bool = False
     relevntdoc: str = ""
     web_search_results: str = ""
-    
 
 
 def input_filter_agent(state: ChatState) -> ChatState:
@@ -38,56 +37,63 @@ def input_filter_agent(state: ChatState) -> ChatState:
         f"Check if this query is math-focused (algebra, geometry, etc.): {state.input}. Respond with 'yes' or 'no'."
     )
     ismath, score = querying(state.input)
-    
+
     llmcheckmath = "yes" in response.content.lower()
-    
+
     if llmcheckmath or ismath:
         result = f"✅ Allowed: {state.input} (Similarity: {score:.3f})"
     else:
-        result = f"❌ Blocked. Not a math query: {state.input} (Similarity: {score:.3f})"
-    
+        result = (
+            f"❌ Blocked. Not a math query: {state.input} (Similarity: {score:.3f})"
+        )
+
     return ChatState(
         input=state.input,
         output=result,
         counter=state.counter + 1,
         ismath=ismath,
         llmcheckmath=llmcheckmath,
-        score=score
+        score=score,
     )
+
+
 def checkifitsmath(state: ChatState) -> str:
     return "MathQuery" if state.llmcheckmath or state.ismath else "Non_Math_Query"
+
+
 def notmathquery(state: ChatState) -> ChatState:
     reasons = []
-    
+
     if not state.llmcheckmath:
         reasons.append("LLM flagged it as not math")
     if not state.ismath:
         reasons.append("Embedding similarity below threshold")
-    
+
     reason_text = "; ".join(reasons) if reasons else "No reason specified"
-    
+
     return ChatState(
         input=state.input,
         output=f"🚫 Query filtered out. Reason: {reason_text} (Similarity: {state.score:.3f})",
         counter=state.counter + 1,
         ismath=state.ismath,
         llmcheckmath=state.llmcheckmath,
-        score=state.score
+        score=state.score,
     )
+
+
 def checkifinkb(state: ChatState) -> str:
     return "INKB" if state.is_present_in_kb else "NotINKB"
-        
+
 
 def handlemathquery(state: ChatState) -> ChatState:
-    is_outside_kb, docs,score = is_out_of_knowledge_base(state.input)
+    is_outside_kb, docs, score = is_out_of_knowledge_base(state.input)
     print(is_outside_kb)
-    
+
     retrieved_snippets = ""
-    if (is_outside_kb):
-        state.relevntdoc=ask_question(question=state.input)
+    if is_outside_kb:
+        state.relevntdoc = ask_question(question=state.input)
         print(state.relevntdoc)
-   
-    
+
     return ChatState(
         input=state.input,
         output=f" Input:\n{state.input}\n\n📚 KB Coverage: { is_outside_kb} \n score:{score}",
@@ -96,9 +102,10 @@ def handlemathquery(state: ChatState) -> ChatState:
         llmcheckmath=state.llmcheckmath,
         score=state.score,
         is_present_in_kb=is_outside_kb,
-        
-        relevntdoc=retrieved_snippets
+        relevntdoc=retrieved_snippets,
     )
+
+
 def Retrievalagent(state: ChatState) -> ChatState:
     prompt = f"""
 You are a smart document cleaning and correction agent specialized in mathematics.
@@ -128,11 +135,12 @@ Retrieved Chunks:
         ismath=state.ismath,
         llmcheckmath=state.llmcheckmath,
         score=state.score,
-        relevntdoc=str(response.content)
+        relevntdoc=str(response.content),
     )
 
 
 import requests
+
 
 def webRetrievalagent(state: ChatState) -> ChatState:
     try:
@@ -142,7 +150,7 @@ def webRetrievalagent(state: ChatState) -> ChatState:
             "api_key": serpapi_key,
             "num": 5,
             "hl": "en",
-            "gl": "us"
+            "gl": "us",
         }
 
         response = requests.get("https://serpapi.com/search", params=params)
@@ -172,7 +180,7 @@ def webRetrievalagent(state: ChatState) -> ChatState:
             output=f"🌐 Web search retrieved {len(search_results)} relevant results.",
             counter=state.counter + 1,
             web_search_results=web_search_content,
-            is_present_in_kb=state.is_present_in_kb
+            is_present_in_kb=state.is_present_in_kb,
         )
 
     except Exception as e:
@@ -181,11 +189,12 @@ def webRetrievalagent(state: ChatState) -> ChatState:
             output=f"❌ Web search failed: {str(e)}",
             counter=state.counter + 1,
             web_search_results="",
-            is_present_in_kb=state.is_present_in_kb
+            is_present_in_kb=state.is_present_in_kb,
         )
 
+
 def solutionGenerator(state: ChatState) -> ChatState:
-    llmresponse=""
+    llmresponse = ""
     if state.is_present_in_kb:
         prompt = f"""
 You are a brilliant math professor helping a student understand a problem step by step.
@@ -204,10 +213,10 @@ Your job is to:
 - Do not say "based on the context" or refer to the documents—just give the answer as if it’s your own
 
 Return only the final cleaned step-by-step answer.
-""" 
+"""
         llmresponse = llm.invoke(prompt).content
     else:
-        prompt=f"""You are a brilliant math professor helping a student with a math problem.
+        prompt = f"""You are a brilliant math professor helping a student with a math problem.
 
 Here is the student’s question:
 "{state.input}"
@@ -229,45 +238,48 @@ Do **not** mention the source links or say “based on web search.” Just expla
 Return only the cleaned, final answer.
 
 """
-        llmresponse=llm.invoke(prompt).content
-       
-       
-    
+        llmresponse = llm.invoke(prompt).content
+
     return ChatState(
         input=state.input,
         output=llmresponse,
         counter=state.counter + 1,
-        )    
+    )
+
+
 def positive():
     provide_feedback(True)
+
+
 def Negative():
     provide_feedback(False)
-
-
 
 
 graph_builder = StateGraph(ChatState)
 graph_builder.add_node("classify_math_query", input_filter_agent)
 graph_builder.add_node("handle_math_query", handlemathquery)
 graph_builder.add_node("handle_non_math_query", notmathquery)
-graph_builder.add_node("Retrievalagent",Retrievalagent)
-graph_builder.add_node("webRetrieval",webRetrievalagent)
-graph_builder.add_node("SolutionGenerator",solutionGenerator)
+graph_builder.add_node("Retrievalagent", Retrievalagent)
+graph_builder.add_node("webRetrieval", webRetrievalagent)
+graph_builder.add_node("SolutionGenerator", solutionGenerator)
 
 graph_builder.set_entry_point("classify_math_query")
 
-graph_builder.add_conditional_edges("classify_math_query", checkifitsmath, {
-    "MathQuery": "handle_math_query",
-    "Non_Math_Query": "handle_non_math_query"
-})
-graph_builder.add_conditional_edges("handle_math_query",checkifinkb,{
-    "INKB":"Retrievalagent","NotINKB":"webRetrieval"
-})
-graph_builder.add_edge("Retrievalagent","SolutionGenerator")
+graph_builder.add_conditional_edges(
+    "classify_math_query",
+    checkifitsmath,
+    {"MathQuery": "handle_math_query", "Non_Math_Query": "handle_non_math_query"},
+)
+graph_builder.add_conditional_edges(
+    "handle_math_query",
+    checkifinkb,
+    {"INKB": "Retrievalagent", "NotINKB": "webRetrieval"},
+)
+graph_builder.add_edge("Retrievalagent", "SolutionGenerator")
 
-graph_builder.add_edge("webRetrieval","SolutionGenerator")
+graph_builder.add_edge("webRetrieval", "SolutionGenerator")
 
-graph_builder.add_edge("SolutionGenerator",END)
+graph_builder.add_edge("SolutionGenerator", END)
 
 
 graph = graph_builder.compile()
@@ -276,6 +288,7 @@ try:
     with open("workflow.png", "wb") as f:
         f.write(graph.get_graph().draw_mermaid_png())
     import webbrowser
+
     webbrowser.open("file://" + os.path.abspath("workflow.png"))
 except Exception as e:
     print("Error:", e)

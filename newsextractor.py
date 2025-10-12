@@ -4,7 +4,9 @@ import random
 import re
 
 
-def extract_article_text(url: str, max_paragraphs: int = 10, max_words: int = 200) -> str:
+def extract_article_text(
+    url: str, max_paragraphs: int = 10, max_words: int = 200
+) -> str:
     """
     Fetch and extract readable article text from a URL (limited to ~200 words).
     Falls back gracefully if content cannot be parsed.
@@ -66,15 +68,16 @@ def enrich_news_with_articles(news_json: dict) -> dict:
 
         sentiment = round(random.uniform(-1, 1), 2)  # Fake sentiment for now
 
-        enriched["articles"].append({
-            "title": title,
-            "link": link or "N/A",
-            "article": article_text,
-            "sentiment": sentiment
-        })
+        enriched["articles"].append(
+            {
+                "title": title,
+                "link": link or "N/A",
+                "article": article_text,
+                "sentiment": sentiment,
+            }
+        )
 
     return enriched
-
 
 
 # if __name__ == "__main__":
