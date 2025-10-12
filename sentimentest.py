@@ -26,5 +26,5 @@ def get_sentiment_api(text: str):
     except Exception as e:
         return {"label": "ERROR", "sentiment": 0.0, "error": str(e)}
 
-print(get_sentiment_api("""If you tell me where you’re hosting your backend (local, Render, Vercel, Colab, or cloud VM),
-I’ll tell you exactly which option is best and help wire it directly into your existing sentimentAgent."""))
+# print(get_sentiment_api("""If you tell me where you’re hosting your backend (local, Render, Vercel, Colab, or cloud VM),
+# I’ll tell you exactly which option is best and help wire it directly into your existing sentimentAgent."""))

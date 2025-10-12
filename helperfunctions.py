@@ -64,7 +64,7 @@ def get_financial_json(ticker_symbol: str):
 
     except Exception as e:
         return {"error": str(e)}
-print(get_financial_json("NVDA"))
+# print(get_financial_json("NVDA"))
 
-print(find_ticker("nvidia"))   
+# print(find_ticker("nvidia"))   
 
