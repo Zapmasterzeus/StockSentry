@@ -6,6 +6,5 @@ charts/*
 .env
 example_output.txt
 README.md
-package*.json
 start*.bat
 requirements.txt
