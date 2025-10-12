@@ -40,3 +40,5 @@ matplotlib
 # Optional (for dev & debugging)
 tqdm
 python-multipart
+
+gradio_client
