@@ -3,7 +3,7 @@
 **Team Project:** StockSentry – Multi-Agent AI-driven Financial Analysis and Forecasting System  
 **Team Name:** Sigan  
 
-# 🧠 StockSentry: Multi-Agent AI Financial Intelligence System
+# StockSentry: Multi-Agent AI Financial Intelligence System
 
 
 
