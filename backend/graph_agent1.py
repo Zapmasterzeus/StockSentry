@@ -313,8 +313,8 @@ graph = graph_builder.compile()
 try:
     with open("workflow.png", "wb") as f:
         f.write(graph.get_graph().draw_mermaid_png())
-    import webbrowser
+    # import webbrowser
 
-    webbrowser.open("file://" + os.path.abspath("workflow.png"))
+    # webbrowser.open("file://" + os.path.abspath("workflow.png"))
 except Exception as e:
     print("Error:", e)

@@ -40,5 +40,5 @@ def get_google_news(query, num_results=5):
         "news": articles
     }
 
-if __name__ == "__main__":
-    print(get_google_news("Nvidia stock"))
+# if __name__ == "__main__":
+#     print(get_google_news("Nvidia stock"))

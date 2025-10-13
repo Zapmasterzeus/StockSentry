@@ -76,8 +76,9 @@ async def analyze(request: AnalysisRequest):
         # Run the analysis in a thread to avoid blocking
         loop = asyncio.get_event_loop()
         final_state = await loop.run_in_executor(None, graph.invoke, initial_state)
+        print(final_state)
         
-        logger.info(f"Analysis completed. Final state type: {type(final_state)}")
+        # logger.info(f"Analysis completed. Final state type: {type(final_state)}")
         
         # Handle both dict and ChatState object responses
         if isinstance(final_state, dict):

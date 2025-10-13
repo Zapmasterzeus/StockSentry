@@ -6,6 +6,7 @@ import io, base64, warnings
 from PIL import Image
 import os, warnings, os, uuid
 from dotenv import load_dotenv
+from io import BytesIO
 
 load_dotenv()
 from gradio_client import Client
@@ -92,13 +93,20 @@ def arima_predict(ticker: str, forecast_days: int = 15):
         plt.legend()
         plt.grid(True)
         plt.tight_layout()
+        buffer = BytesIO()
 
         # --- Save the plot ---
         os.makedirs("static/images", exist_ok=True)
-        unique_filename = f"{ticker}_{uuid.uuid4().hex[:8]}.png"
-        image_path = os.path.join("static", "images", unique_filename)
-        plt.savefig(image_path)
+        plt.savefig(buffer, format="png", bbox_inches="tight", dpi=100)
+        buffer.seek(0)
+        image_base64 = base64.b64encode(buffer.read()).decode("utf-8")
         plt.close()
+        buffer.close()
+        # print(image_base64)
+        # unique_filename = f"{ticker}_{uuid.uuid4().hex[:8]}.png"
+        # image_path = os.path.join("static", "images", unique_filename)
+        # plt.savefig(image_path) 
+        # plt.close()
 
         # --- Return results ---
         return {
@@ -107,7 +115,7 @@ def arima_predict(ticker: str, forecast_days: int = 15):
             "forecast_days": forecast_days,
             "forecast_values_arima": forecast_values,
             "forecast_values_lstm": result["forecast_values"],
-            "image_path": image_path,
+            "image_path": image_base64,
             "summary_arima": {
                 "latest_price": last_price,
                 "predicted_trend": "up" if last_forecast > last_price else "down",

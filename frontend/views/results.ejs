@@ -501,13 +501,17 @@
                         <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
                             <i class="fas fa-chart-area text-orange-600 mr-3"></i>Forecast Visualization
                         </h2>
+                        <!-- <p><%- data.forecast.image_path%></p> -->
                         <% if (data.charts && data.charts.length> 0 && data.charts[0]) { %>
-                            <div class="text-center">
-                                <img src="http://localhost:8000<%= data.charts[0] %>" alt="ARIMA Forecast Chart"
-                                    class="w-full rounded-xl shadow-lg border border-gray-200">
-                                <p class="text-sm text-gray-600 mt-3 font-medium">ARIMA Forecast Chart - <%=
-                                        data.forecast.forecast_days || 15 %> Day Prediction</p>
-                            </div>
+                        <div class="text-center">
+                            <img src="data:image/png;base64,<%- data.forecast.image_path %>" alt="ARIMA Forecast Chart"
+                                class="w-full rounded-xl shadow-lg border border-gray-200">
+                            <p class="text-sm text-gray-600 mt-3 font-medium">
+                                ARIMA Forecast Chart - <%= data.forecast_days || 15 %> Day Prediction
+                            </p>
+                        </div>
+
+
                             <% } else { %>
                                 <div class="text-center py-8">
                                     <i class="fas fa-chart-line text-gray-300 text-4xl mb-3"></i>
