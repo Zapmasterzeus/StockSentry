@@ -1,14 +1,17 @@
 ## Submission
 
-**Project Name:**  **StockSentry**
+**Project Name:**  *StockSentry*
 **Hackathon:**  *Online Hackathon 29.2 by Flipr*
 **Team Project:** StockSentry : Multi-Agent AI-driven financial analysis and forecasting system.
 **Team Name:** Sigan
 
 # StockSentry : Multi-Agent AI Financial Intelligence System
 
-StockSentry is an agentic, multi-intelligence stock analysis system that autonomously performs fundamental analysis, news sentiment evaluation, and AI-based forecasting using both ARIMA and LSTM models.
-Built on a LangGraph multi-agent architecture, it integrates live financial data, sentiment analysis via SerpAPI, and predictive modeling from Hugging Face Spaces all orchestrated through a FastAPI backend and EJS-based frontend, deployed seamlessly on Render.
+
+**StockSentry** is an **AI-driven multi-agent stock analysis system** that autonomously performs **fundamental analysis**, **news sentiment evaluation**, and **price forecasting** using **ARIMA** and **LSTM** models.
+Built on **LangGraph**, it combines **live financial data**, **RoBERTa sentiment analysis**, and **Hugging Face forecasting**, powered by a **FastAPI backend** and **EJS frontend**, deployed on **Render**.
+
+
 
 ## Key Features: Multi-Agent Financial Intelligence System
 
