@@ -4,29 +4,33 @@ services:
     name: stocksentry-backend
     runtime: python
     region: oregon
-    buildCommand: "cd backend && pip install -r requirements.txt"
-    startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
-      - key: PORT
-        value: 8000
-    # Add your .env variables here or use Render dashboard
-    # - key: YOUR_API_KEY
-    #   sync: false
+      - key: GOOGLE_GENAI_USE_VERTEXAI
+        value: FALSE
+      # Add these secrets manually in Render Dashboard after deployment
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: SERPAPI_KEY
+        sync: false
+      - key: HUGGINGFACE_API_KEY
+        sync: false
 
   # Frontend Service
   - type: web
     name: stocksentry-frontend
     runtime: node
     region: oregon
-    buildCommand: "cd frontend && npm install"
-    startCommand: "cd frontend && npm start"
+    rootDir: frontend
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
       - key: NODE_VERSION
         value: 18.17.0
-      - key: PORT
-        value: 3000
       - key: BACKEND_URL
         fromService:
           type: web
