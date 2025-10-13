@@ -1,9 +1,9 @@
 ## Submission
 
-**Project Name:**  StockSentry
-**Hackathon:**  *Online Hackathon 29.2 by Flipr*
-**Team Project:** StockSentry : Multi-Agent AI-driven financial analysis and forecasting system.
-**Team Name:** Sigan
+Project Name:  StockSentry
+Hackathon:  *Online Hackathon 29.2 by Flipr*
+Team Project: StockSentry : Multi-Agent AI-driven financial analysis and forecasting system.
+Team Name: Sigan
 
 # StockSentry : Multi-Agent AI Financial Intelligence System
 
