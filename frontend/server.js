@@ -10,32 +10,33 @@ app.set('views', path.join(__dirname, 'views'));
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// Static files - serve from 'public' folder in frontend directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Backend API URL - use environment variable for production
+// Backend API URL
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8000';
 
-// -------------------- AUTO PINGER -------------------- //
-// Keeps backend awake even on Render free tier
-const pingBackend = async () => {
+// Backend warmup function
+async function warmupBackend() {
     try {
-        const healthUrl = `${BACKEND_URL}/health`;
-        const res = await axios.get(healthUrl, { timeout: 8000 });
-        console.log(`✅ Backend alive: ${res.status} ${res.statusText}`);
-    } catch (err) {
-        console.warn(`⚠️ Backend ping failed: ${err.message}`);
+        console.log('Attempting to warm up backend...');
+        await axios.get(`${BACKEND_URL}/health`, {
+            timeout: 60000 // 60 second timeout for cold start
+        });
+        console.log('✓ Backend is ready');
+        return true;
+    } catch (error) {
+        console.log('Backend warmup in progress or failed:', error.message);
+        return false;
     }
-};
+}
 
-// Run first ping immediately on startup
-pingBackend();
+// Warm up backend on startup
+warmupBackend();
 
-// Schedule every 10 minutes (600,000 ms)
-setInterval(pingBackend, 10 * 60 * 1000);
-
-// ------------------------------------------------------ //
+// Keep backend alive with periodic pings (every 10 minutes)
+setInterval(() => {
+    warmupBackend();
+}, 10 * 60 * 1000);
 
 // Routes
 app.get('/', (req, res) => {
@@ -54,12 +55,15 @@ app.post('/analyze', async (req, res) => {
     try {
         console.log(`Analyzing ticker: ${ticker}`);
 
+        // Show loading state and warm up backend if needed
+        console.log('Ensuring backend is awake...');
+
         const response = await axios.post(
             `${BACKEND_URL}/analyze`,
             { ticker },
             {
                 headers: { 'Content-Type': 'application/json' },
-                timeout: 120000 // 2 minute timeout for analysis
+                timeout: 180000 // 3 minute timeout (includes cold start time)
             }
         );
 
@@ -67,15 +71,20 @@ app.post('/analyze', async (req, res) => {
     } catch (error) {
         console.error('Analysis error:', error.response?.data || error.message);
 
-        const errorMessage = error.response?.data?.detail
-            || error.message
-            || 'Analysis failed. Please try again.';
+        let errorMessage;
+        if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
+            errorMessage = 'Request timed out. The backend service may be starting up. Please try again in a moment.';
+        } else {
+            errorMessage = error.response?.data?.detail
+                || error.message
+                || 'Analysis failed. Please try again.';
+        }
 
         res.render('index', { error: errorMessage });
     }
 });
 
-// Health check endpoint for Render
+// Health check endpoint
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'healthy' });
 });
