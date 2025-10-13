@@ -17,6 +17,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Backend API URL - use environment variable for production
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8000';
 
+// -------------------- AUTO PINGER -------------------- //
+// Keeps backend awake even on Render free tier
+const pingBackend = async () => {
+    try {
+        const healthUrl = `${BACKEND_URL}/health`;
+        const res = await axios.get(healthUrl, { timeout: 8000 });
+        console.log(`✅ Backend alive: ${res.status} ${res.statusText}`);
+    } catch (err) {
+        console.warn(`⚠️ Backend ping failed: ${err.message}`);
+    }
+};
+
+// Run first ping immediately on startup
+pingBackend();
+
+// Schedule every 10 minutes (600,000 ms)
+setInterval(pingBackend, 10 * 60 * 1000);
+
+// ------------------------------------------------------ //
+
 // Routes
 app.get('/', (req, res) => {
     res.render('index', { error: null });
