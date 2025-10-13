@@ -8,6 +8,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));  // For custom CSS if needed
 app.use('/charts', express.static(path.join(__dirname, '../charts')));  // Serve charts
+app.use('/assets', express.static('assets'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
     res.render('index');
