@@ -27,7 +27,7 @@ async function warmupBackend() {
     try {
         console.log('Checking backend health...');
         const response = await axios.get(`${BACKEND_URL}/health`, {
-            timeout:  // 60 second timeout for cold start
+            timeout: 80000 // 60 second timeout for cold start
         });
 
         backendStatus = {
