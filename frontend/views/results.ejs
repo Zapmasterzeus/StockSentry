@@ -1,86 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>InsightInvest - <%= data.tracker || 'Stock' %> Analysis</title>
+    <title>StockSentry - <%= data.tracker || 'Stock' %> Analysis</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --ocean-blue: #0F4C75;
-            --light-blue: #3282B8;
-            --teal: #0F4C75;
-            --coral: #FF6B6B;
-            --mint: #4ECDC4;
-            --cream: #F8F9FA;
-            --slate: #495057;
-            --success: #28A745;
-            --warning: #FFC107;
+            --dark-bg: #0d0d0d;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(255, 165, 0, 0.5);
+            --tangerine: #FFA500;
+            --tangerine-light: #FFB733;
+            --amber: #FACC15;
+            --orange-dark: #FF8C00;
+            --text-light: #E5E5E5;
+            --text-muted: #9CA3AF;
+            --success: #22C55E;
+            --warning: #FBBF24;
+            --danger: #EF4444;
         }
-        .ocean-gradient-bg {
-            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--light-blue) 50%, var(--mint) 100%);
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text-light);
         }
-        .ocean-blue-bg {
-            background-color: var(--ocean-blue);
+
+        .section-card,
+        .metric-card,
+        .bg-white {
+            background: var(--card-bg) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+            color: var(--text-light);
         }
-        .light-blue-bg {
-            background-color: var(--light-blue);
-        }
-        .coral-bg {
-            background-color: var(--coral);
-        }
-        .mint-bg {
-            background-color: var(--mint);
-        }
-        .cream-bg {
-            background-color: var(--cream);
-        }
-        .slate-bg {
-            background-color: var(--slate);
-        }
-        .ocean-blue-text {
-            color: var(--ocean-blue);
-        }
-        .light-blue-text {
-            color: var(--light-blue);
-        }
-        .coral-text {
-            color: var(--coral);
-        }
-        .mint-text {
-            color: var(--mint);
-        }
-        .cream-text {
-            color: var(--cream);
-        }
-        .slate-text {
-            color: var(--slate);
-        }
+
         .card-shadow {
-            box-shadow: 0 20px 25px -5px rgba(15, 76, 117, 0.1), 0 10px 10px -5px rgba(15, 76, 117, 0.04);
+            box-shadow: 0 10px 25px rgba(255, 140, 0, 0.15);
         }
+
         .btn-primary {
-            background: linear-gradient(135deg, var(--coral) 0%, #e55a5a 100%);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--tangerine) 0%, var(--orange-dark) 100%) !important;
+            color: white !important;
+            border: none !important;
         }
+
         .btn-primary:hover {
-            background: linear-gradient(135deg, #e55a5a 0%, var(--coral) 100%);
+            background: linear-gradient(135deg, var(--orange-dark) 0%, var(--tangerine) 100%) !important;
+            box-shadow: 0 8px 20px rgba(255, 165, 0, 0.4);
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
         }
-        .metric-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(73, 80, 87, 0.3);
+
+        .ocean-blue-text,
+        .light-blue-text,
+        .mint-text,
+        .slate-text,
+        .text-gray-800,
+        .text-gray-700 {
+            color: var(--text-light) !important;
         }
-        .section-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(73, 80, 87, 0.2);
+
+        .coral-text,
+        .text-orange-600,
+        .text-blue-600,
+        .text-indigo-600,
+        .text-purple-600 {
+            color: var(--tangerine) !important;
+        }
+
+        .border-t-4,
+        .border-blue-200,
+        .border-purple-200 {
+            border-color: var(--tangerine) !important;
+        }
+
+        .bg-gradient-to-r,
+        .bg-gradient-to-b,
+        .bg-blue-50,
+        .bg-purple-50,
+        .bg-indigo-50,
+        .bg-pink-50 {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 165, 0, 0.25) 100%) !important;
+        }
+
+        .border-gray-200,
+        .border-gray-400 {
+            border-color: rgba(255, 165, 0, 0.3) !important;
+        }
+
+        .text-gray-500,
+        .text-gray-600,
+        .text-gray-400 {
+            color: var(--text-muted) !important;
+        }
+
+        .bg-green-200,
+        .bg-green-50 {
+            background: rgba(34, 197, 94, 0.15) !important;
+            color: var(--success) !important;
+        }
+
+        .bg-red-200,
+        .bg-red-50 {
+            background: rgba(239, 68, 68, 0.15) !important;
+            color: var(--danger) !important;
+        }
+
+        .border-green-500,
+        .text-green-600 {
+            color: var(--success) !important;
+            border-color: var(--success) !important;
+        }
+
+        .border-red-500,
+        .text-red-600 {
+            color: var(--danger) !important;
+            border-color: var(--danger) !important;
+        }
+
+        .bg-gradient-to-r.from-blue-50.to-indigo-50,
+        .bg-gradient-to-r.from-indigo-50.to-purple-50 {
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.1), rgba(255, 165, 0, 0.25)) !important;
+        }
+
+        .text-gray-800,
+        .text-gray-900 {
+            color: var(--text-light) !important;
+        }
+
+        .bg-gray-50 {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .border-l-4 {
+            border-left-color: var(--tangerine) !important;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            color: var(--tangerine-light) !important;
+        }
+
+        a {
+            color: var(--amber) !important;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: var(--tangerine) !important;
+        }
+
+        /* Forecast charts, cards & metrics */
+        .text-blue-600,
+        .text-purple-600,
+        .text-indigo-600 {
+            color: var(--tangerine) !important;
+        }
+
+        .border-blue-200,
+        .border-indigo-200,
+        .border-purple-200 {
+            border-color: var(--border-glow) !important;
+        }
+
+        /* Footer */
+        .bg-white.rounded-xl.shadow-lg.p-6 {
+            background: var(--card-bg) !important;
+            border: 1px solid var(--border-glow);
+            color: var(--text-light);
         }
     </style>
+
 </head>
+
 <body class="ocean-gradient-bg min-h-screen">
     <div class="container mx-auto p-4 max-w-7xl">
         <!-- Header -->
@@ -93,7 +190,8 @@
                     </h1>
                     <p class="slate-text text-lg">Comprehensive AI-Powered Investment Research</p>
                 </div>
-                <a href="/" class="btn-primary text-white px-6 py-3 rounded-xl transition duration-200 flex items-center font-semibold">
+                <a href="/"
+                    class="btn-primary text-white px-6 py-3 rounded-xl transition duration-200 flex items-center font-semibold">
                     <i class="fas fa-arrow-left mr-2"></i>New Analysis
                 </a>
             </div>
@@ -101,271 +199,347 @@
 
         <!-- Key Metrics Row -->
         <% if (data.financials && data.financials.ticker) { %>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-            <div class="metric-card rounded-2xl card-shadow p-6 text-center border-t-4" style="border-top-color: var(--coral);">
-                <div class="text-3xl font-bold coral-text mb-2">$<%= data.financials.EPS ? data.financials.EPS.toFixed(2) : 'N/A' %></div>
-                <div class="ocean-blue-text font-semibold">Earnings Per Share</div>
-            </div>
-            <div class="metric-card rounded-2xl card-shadow p-6 text-center border-t-4" style="border-top-color: var(--ocean-blue);">
-                <div class="text-3xl font-bold ocean-blue-text mb-2"><%= data.financials.PE_Ratio ? data.financials.PE_Ratio.toFixed(1) : 'N/A' %></div>
-                <div class="ocean-blue-text font-semibold">P/E Ratio</div>
-            </div>
-            <div class="metric-card rounded-2xl card-shadow p-6 text-center border-t-4" style="border-top-color: var(--mint);">
-                <div class="text-3xl font-bold coral-text mb-2"><%= data.financials.Debt_to_Equity ? data.financials.Debt_to_Equity.toFixed(1) : 'N/A' %></div>
-                <div class="ocean-blue-text font-semibold">Debt-to-Equity</div>
-            </div>
-            <div class="metric-card rounded-2xl card-shadow p-6 text-center border-t-4" style="border-top-color: var(--light-blue);">
-                <div class="text-3xl font-bold ocean-blue-text mb-2"><%= data.tracker || 'N/A' %></div>
-                <div class="ocean-blue-text font-semibold">Ticker Symbol</div>
-            </div>
-        </div>
-        <% } %>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Financial Trends Card -->
-            <div class="section-card rounded-2xl card-shadow p-6">
-                <h2 class="text-2xl font-bold mb-6 ocean-blue-text flex items-center">
-                    <i class="fas fa-chart-line coral-text mr-3"></i>Financial Trends
-                </h2>
-                <% if (data.financials && data.financials.Revenue_Trend) { %>
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="font-semibold ocean-blue-text mb-3">Revenue Trend (Billions)</h3>
-                            <div class="space-y-2">
-                                <% Object.entries(data.financials.Revenue_Trend).forEach(([date, value]) => { %>
-                                    <div class="flex justify-between items-center p-3 rounded-xl" style="background: linear-gradient(135deg, var(--mint) 0%, rgba(78, 205, 196, 0.3) 100%);">
-                                        <span class="font-medium ocean-blue-text"><%= new Date(date).toLocaleDateString() %></span>
-                                        <span class="text-lg font-bold coral-text">$<%= (value / 1e9).toFixed(1) %>B</span>
-                                    </div>
-                                <% }) %>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold ocean-blue-text mb-3">Profit Margin Trend</h3>
-                            <div class="space-y-2">
-                                <% Object.entries(data.financials.Profit_Margin_Trend).forEach(([date, value]) => { %>
-                                    <div class="flex justify-between items-center p-3 rounded-xl" style="background: linear-gradient(135deg, var(--mint) 0%, rgba(78, 205, 196, 0.3) 100%);">
-                                        <span class="font-medium ocean-blue-text"><%= new Date(date).toLocaleDateString() %></span>
-                                        <span class="text-lg font-bold coral-text"><%= value.toFixed(1) %>%</span>
-                                    </div>
-                                <% }) %>
-                            </div>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="metric-card rounded-2xl card-shadow p-6 text-center border-t-4"
+                    style="border-top-color: var(--coral);">
+                    <div class="text-3xl font-bold coral-text mb-2">$<%= data.financials.EPS ?
+                            data.financials.EPS.toFixed(2) : 'N/A' %>
                     </div>
-                <% } else { %>
-                    <p class="text-gray-500">Financial trend data not available</p>
-                <% } %>
-            </div>
-
-            <!-- Market Sentiment Card -->
-            <div class="section-card rounded-2xl card-shadow p-6">
-                <h2 class="text-2xl font-bold mb-6 ocean-blue-text flex items-center">
-                    <i class="fas fa-heart coral-text mr-3"></i>Market Sentiment
-                </h2>
-                <% if (data.sentiment && data.sentiment.summary) { %>
-                    <div class="text-center mb-6">
-                        <div class="text-4xl font-bold mb-2 <%= data.sentiment.summary.overall_tone === 'Bullish' ? 'coral-text' : data.sentiment.summary.overall_tone === 'Bearish' ? 'coral-text' : 'ocean-blue-text' %>">
-                            <%= data.sentiment.summary.overall_tone || 'Neutral' %>
-                        </div>
-                        <p class="slate-text mb-4">
-                            Average Sentiment: <span class="font-bold coral-text"><%= data.sentiment.summary.average_sentiment || 0 %></span>
-                        </p>
-                        <div class="flex justify-center space-x-6 text-sm">
-                            <div class="px-4 py-2 rounded-xl" style="background: linear-gradient(135deg, var(--mint) 0%, rgba(78, 205, 196, 0.5) 100%);">
-                                <span class="coral-text font-bold">Positive: <%= data.sentiment.summary.positive_articles || 0 %></span>
-                            </div>
-                            <div class="px-4 py-2 rounded-xl" style="background: linear-gradient(135deg, var(--warning) 0%, rgba(190, 238, 69, 0.5) 100%);">
-                                <span class="coral-text font-bold">Negative: <%= data.sentiment.summary.negative_articles || 0 %></span>
-                            </div>
-                        </div>
+                    <div class="ocean-blue-text font-semibold">Earnings Per Share</div>
+                </div>
+                <div class="metric-card rounded-2xl card-shadow p-6 text-center border-t-4"
+                    style="border-top-color: var(--ocean-blue);">
+                    <div class="text-3xl font-bold ocean-blue-text mb-2">
+                        <%= data.financials.PE_Ratio ? data.financials.PE_Ratio.toFixed(1) : 'N/A' %>
                     </div>
-                    
-                    <!-- News Articles -->
-                    <% if (data.sentiment.articles && data.sentiment.articles.length > 0) { %>
-                        <div>
-                            <h3 class="font-semibold text-gray-700 mb-3">Recent News Analysis</h3>
-                            <div class="space-y-3 max-h-64 overflow-y-auto">
-                                <% data.sentiment.articles.slice(0, 5).forEach((article, index) => { %>
-                                    <div class="border-l-4 <%= article.sentiment > 0.1 ? 'border-green-500 bg-green-50' : article.sentiment < -0.1 ? 'border-red-500 bg-red-50' : 'border-gray-400 bg-gray-50' %> p-3 rounded-r-lg">
-                                        <div class="flex justify-between items-start mb-2">
-                                            <h4 class="font-medium text-sm text-gray-800 flex-1 mr-2"><%= article.title %></h4>
-                                            <span class="text-xs px-2 py-1 rounded <%= article.sentiment > 0.1 ? 'bg-green-200 text-green-800' : article.sentiment < -0.1 ? 'bg-red-200 text-red-800' : 'bg-gray-200 text-gray-800' %>">
-                                                <%= article.sentiment > 0.1 ? 'Positive' : article.sentiment < -0.1 ? 'Negative' : 'Neutral' %>
-                                            </span>
-                                        </div>
-                                        <p class="text-xs text-gray-600">
-                                            Sentiment: <span class="font-bold"><%= article.sentiment.toFixed(3) %></span> | 
-                                            Confidence: <span class="font-bold"><%= (article.confidence * 100).toFixed(1) %>%</span>
-                                        </p>
-                                    </div>
-                                <% }) %>
-                            </div>
-                        </div>
-                    <% } %>
-                <% } else { %>
-                    <p class="text-gray-500">Sentiment analysis not available</p>
-                <% } %>
-            </div>
-
-            <!-- Price Forecast Card -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
-                    <i class="fas fa-crystal-ball text-purple-600 mr-3"></i>Price Forecasts
-                </h2>
-                <% if (data.forecast && (data.forecast.forecast_values_arima || data.forecast.forecast_values_lstm)) { %>
-                    <div class="space-y-6">
-                        <!-- Model Comparison Summary -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- ARIMA Summary -->
-                            <% if (data.forecast.summary_arima) { %>
-                                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200">
-                                    <h4 class="font-bold text-blue-800 mb-3">ARIMA Model</h4>
-                                    <div class="grid grid-cols-3 gap-2 text-center">
-                                        <div>
-                                            <div class="text-lg font-bold text-gray-800">$<%= data.forecast.summary_arima.latest_price.toFixed(2) %></div>
-                                            <div class="text-xs text-gray-600">Current</div>
-                                        </div>
-                                        <div>
-                                            <div class="text-lg font-bold <%= data.forecast.summary_arima.predicted_trend === 'up' ? 'text-green-600' : 'text-red-600' %>">
-                                                <%= data.forecast.summary_arima.predicted_trend === 'up' ? '↗' : '↘' %>
-                                            </div>
-                                            <div class="text-xs text-gray-600">Trend</div>
-                                        </div>
-                                        <div>
-                                            <div class="text-lg font-bold <%= data.forecast.summary_arima.avg_predicted_growth > 0 ? 'text-green-600' : 'text-red-600' %>">
-                                                <%= data.forecast.summary_arima.avg_predicted_growth > 0 ? '+' : '' %><%= data.forecast.summary_arima.avg_predicted_growth %>%
-                                            </div>
-                                            <div class="text-xs text-gray-600">Growth</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <% } %>
-                            
-                            <!-- LSTM Summary -->
-                            <% if (data.forecast.summary_lstm) { %>
-                                <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-xl border border-purple-200">
-                                    <h4 class="font-bold text-purple-800 mb-3">LSTM Model</h4>
-                                    <div class="grid grid-cols-3 gap-2 text-center">
-                                        <div>
-                                            <div class="text-lg font-bold text-gray-800">$<%= data.forecast.summary_lstm.latest_price.toFixed(2) %></div>
-                                            <div class="text-xs text-gray-600">Current</div>
-                                        </div>
-                                        <div>
-                                            <div class="text-lg font-bold <%= data.forecast.summary_lstm.predicted_trend === 'up' ? 'text-green-600' : 'text-red-600' %>">
-                                                <%= data.forecast.summary_lstm.predicted_trend === 'up' ? '↗' : '↘' %>
-                                            </div>
-                                            <div class="text-xs text-gray-600">Trend</div>
-                                        </div>
-                                        <div>
-                                            <div class="text-lg font-bold <%= data.forecast.summary_lstm.avg_predicted_growth > 0 ? 'text-green-600' : 'text-red-600' %>">
-                                                <%= data.forecast.summary_lstm.avg_predicted_growth > 0 ? '+' : '' %><%= data.forecast.summary_lstm.avg_predicted_growth %>%
-                                            </div>
-                                            <div class="text-xs text-gray-600">Growth</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <% } %>
-                        </div>
-                        
-                        <!-- ARIMA Forecast Values -->
-                        <% if (data.forecast.forecast_values_arima) { %>
-                            <div>
-                                <h3 class="font-semibold text-gray-700 mb-3 flex items-center">
-                                    <i class="fas fa-chart-line text-blue-600 mr-2"></i>
-                                    ARIMA Model (<%= data.forecast.forecast_days || 15 %>-day forecast)
-                                </h3>
-                                <div class="grid grid-cols-5 gap-2">
-                                    <% data.forecast.forecast_values_arima.slice(0, 10).forEach((price, index) => { %>
-                                        <div class="text-center p-3 bg-gradient-to-b from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
-                                            <div class="font-bold text-sm text-gray-700">Day <%= index + 1 %></div>
-                                            <div class="text-lg font-bold text-blue-600">$<%= price.toFixed(2) %></div>
-                                        </div>
-                                    <% }) %>
-                                </div>
-                                <% if (data.forecast.forecast_values_arima.length > 10) { %>
-                                    <div class="text-center mt-3">
-                                        <span class="text-sm text-gray-500">... and <%= data.forecast.forecast_values_arima.length - 10 %> more days</span>
-                                    </div>
-                                <% } %>
-                            </div>
-                        <% } %>
-                        
-                        <!-- LSTM Forecast Values -->
-                        <% if (data.forecast.forecast_values_lstm) { %>
-                            <div>
-                                <h3 class="font-semibold text-gray-700 mb-3 flex items-center">
-                                    <i class="fas fa-brain text-purple-600 mr-2"></i>
-                                    LSTM Model (<%= data.forecast.forecast_days || 15 %>-day forecast)
-                                </h3>
-                                <div class="grid grid-cols-5 gap-2">
-                                    <% data.forecast.forecast_values_lstm.slice(0, 10).forEach((price, index) => { %>
-                                        <div class="text-center p-3 bg-gradient-to-b from-purple-50 to-pink-50 rounded-lg border border-purple-200">
-                                            <div class="font-bold text-sm text-gray-700">Day <%= index + 1 %></div>
-                                            <div class="text-lg font-bold text-purple-600">$<%= price.toFixed(2) %></div>
-                                        </div>
-                                    <% }) %>
-                                </div>
-                                <% if (data.forecast.forecast_values_lstm.length > 10) { %>
-                                    <div class="text-center mt-3">
-                                        <span class="text-sm text-gray-500">... and <%= data.forecast.forecast_values_lstm.length - 10 %> more days</span>
-                                    </div>
-                                <% } %>
-                            </div>
-                        <% } %>
+                    <div class="ocean-blue-text font-semibold">P/E Ratio</div>
+                </div>
+                <div class="metric-card rounded-2xl card-shadow p-6 text-center border-t-4"
+                    style="border-top-color: var(--mint);">
+                    <div class="text-3xl font-bold coral-text mb-2">
+                        <%= data.financials.Debt_to_Equity ? data.financials.Debt_to_Equity.toFixed(1) : 'N/A' %>
                     </div>
-                <% } else { %>
-                    <p class="text-gray-500">Forecast data not available</p>
-                <% } %>
-            </div>
-
-            <!-- Forecast Chart Card -->
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
-                    <i class="fas fa-chart-area text-orange-600 mr-3"></i>Forecast Visualization
-                </h2>
-                <% if (data.charts && data.charts.length > 0 && data.charts[0]) { %>
-                    <div class="text-center">
-                        <img src="http://localhost:8000<%= data.charts[0] %>" alt="ARIMA Forecast Chart" class="w-full rounded-xl shadow-lg border border-gray-200">
-                        <p class="text-sm text-gray-600 mt-3 font-medium">ARIMA Forecast Chart - <%= data.forecast.forecast_days || 15 %> Day Prediction</p>
+                    <div class="ocean-blue-text font-semibold">Debt-to-Equity</div>
+                </div>
+                <div class="metric-card rounded-2xl card-shadow p-6 text-center border-t-4"
+                    style="border-top-color: var(--light-blue);">
+                    <div class="text-3xl font-bold ocean-blue-text mb-2">
+                        <%= data.tracker || 'N/A' %>
                     </div>
-                <% } else { %>
-                    <div class="text-center py-8">
-                        <i class="fas fa-chart-line text-gray-300 text-4xl mb-3"></i>
-                        <p class="text-gray-500">Chart generation in progress...</p>
-                    </div>
-                <% } %>
-            </div>
-        </div>
-
-        <!-- Company Overview Card -->
-        <% if (data.company_overview) { %>
-            <div class="mt-6 bg-white rounded-xl shadow-lg p-6">
-                <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
-                    <i class="fas fa-building text-blue-600 mr-3"></i>Company Overview
-                </h2>
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
-                    <div class="text-gray-700 leading-relaxed whitespace-pre-line text-lg"><%= data.company_overview %></div>
+                    <div class="ocean-blue-text font-semibold">Ticker Symbol</div>
                 </div>
             </div>
-        <% } %>
-        
-        <!-- AI Market Intelligence Report -->
-<% if (data.summary) { %>
-    <div class="mt-6 bg-white rounded-xl shadow-lg p-6">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
-            <i class="fas fa-robot text-indigo-600 mr-3"></i>AI Market Intelligence Report
-        </h2>
-        <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-200">
-            <div class="text-gray-700 leading-relaxed text-lg">
-                <% 
-                    let lines = data.summary.split('\n');
-                    lines.forEach(line => {
-                        let trimmedLine = line.trim();
-                        if (trimmedLine.startsWith('## ')) {
-                %>
-                            <h3 class="text-xl font-bold text-gray-800 mt-4 mb-2"><%= trimmedLine.substring(3) %></h3>
-                <% 
-                        } else if (trimmedLine.startsWith('### ')) {
+            <% } %>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Financial Trends Card -->
+                    <div class="section-card rounded-2xl card-shadow p-6">
+                        <h2 class="text-2xl font-bold mb-6 ocean-blue-text flex items-center">
+                            <i class="fas fa-chart-line coral-text mr-3"></i>Financial Trends
+                        </h2>
+                        <% if (data.financials && data.financials.Revenue_Trend) { %>
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="font-semibold ocean-blue-text mb-3">Revenue Trend (Billions)</h3>
+                                    <div class="space-y-2">
+                                        <% Object.entries(data.financials.Revenue_Trend).forEach(([date, value])=> { %>
+                                            <div class="flex justify-between items-center p-3 rounded-xl"
+                                                style="background: linear-gradient(135deg, var(--mint) 0%, rgba(78, 205, 196, 0.3) 100%);">
+                                                <span class="font-medium ocean-blue-text">
+                                                    <%= new Date(date).toLocaleDateString() %>
+                                                </span>
+                                                <span class="text-lg font-bold coral-text">$<%= (value / 1e9).toFixed(1)
+                                                        %>B</span>
+                                            </div>
+                                            <% }) %>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold ocean-blue-text mb-3">Profit Margin Trend</h3>
+                                    <div class="space-y-2">
+                                        <% Object.entries(data.financials.Profit_Margin_Trend).forEach(([date, value])=>
+                                            { %>
+                                            <div class="flex justify-between items-center p-3 rounded-xl"
+                                                style="background: linear-gradient(135deg, var(--mint) 0%, rgba(78, 205, 196, 0.3) 100%);">
+                                                <span class="font-medium ocean-blue-text">
+                                                    <%= new Date(date).toLocaleDateString() %>
+                                                </span>
+                                                <span class="text-lg font-bold coral-text">
+                                                    <%= value.toFixed(1) %>%
+                                                </span>
+                                            </div>
+                                            <% }) %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } else { %>
+                                <p class="text-gray-500">Financial trend data not available</p>
+                                <% } %>
+                    </div>
+
+                    <!-- Market Sentiment Card -->
+                    <div class="section-card rounded-2xl card-shadow p-6">
+                        <h2 class="text-2xl font-bold mb-6 ocean-blue-text flex items-center">
+                            <i class="fas fa-heart coral-text mr-3"></i>Market Sentiment
+                        </h2>
+                        <% if (data.sentiment && data.sentiment.summary) { %>
+                            <div class="text-center mb-6">
+                                <div
+                                    class="text-4xl font-bold mb-2 <%= data.sentiment.summary.overall_tone === 'Bullish' ? 'coral-text' : data.sentiment.summary.overall_tone === 'Bearish' ? 'coral-text' : 'ocean-blue-text' %>">
+                                    <%= data.sentiment.summary.overall_tone || 'Neutral' %>
+                                </div>
+                                <p class="slate-text mb-4">
+                                    Average Sentiment: <span class="font-bold coral-text">
+                                        <%= data.sentiment.summary.average_sentiment || 0 %>
+                                    </span>
+                                </p>
+                                <div class="flex justify-center space-x-6 text-sm">
+                                    <div class="px-4 py-2 rounded-xl"
+                                        style="background: linear-gradient(135deg, var(--mint) 0%, rgba(78, 205, 196, 0.5) 100%);">
+                                        <span class="coral-text font-bold">Positive: <%=
+                                                data.sentiment.summary.positive_articles || 0 %></span>
+                                    </div>
+                                    <div class="px-4 py-2 rounded-xl"
+                                        style="background: linear-gradient(135deg, var(--mint) 0%, rgba(78, 205, 196, 0.5) 100%);">
+                                        <span class="coral-text font-bold">Negative: <%=
+                                                data.sentiment.summary.negative_articles || 0 %></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- News Articles -->
+                            <% if (data.sentiment.articles && data.sentiment.articles.length> 0) { %>
+                                <div>
+                                    <h3 class="font-semibold text-gray-700 mb-3">Recent News Analysis</h3>
+                                    <div class="space-y-3 max-h-64 overflow-y-auto">
+                                        <% data.sentiment.articles.slice(0, 5).forEach((article, index)=> { %>
+                                            <div
+                                                class="border-l-4 <%= article.sentiment > 0.1 ? 'border-green-500 bg-green-50' : article.sentiment < -0.1 ? 'border-red-500 bg-red-50' : 'border-gray-400 bg-gray-50' %> p-3 rounded-r-lg">
+                                                <div class="flex justify-between items-start mb-2">
+                                                    <h4 class="font-medium text-sm text-gray-800 flex-1 mr-2">
+                                                        <%= article.title %>
+                                                    </h4>
+                                                    <span
+                                                        class="text-xs px-2 py-1 rounded <%= article.sentiment > 0.1 ? 'bg-green-200 text-green-800' : article.sentiment < -0.1 ? 'bg-red-200 text-red-800' : 'bg-gray-200 text-gray-800' %>">
+                                                        <%= article.sentiment> 0.1 ? 'Positive' : article.sentiment <
+                                                                -0.1 ? 'Negative' : 'Neutral' %>
+                                                    </span>
+                                                </div>
+                                                <p class="text-xs text-gray-600">
+                                                    Sentiment: <span class="font-bold">
+                                                        <%= article.sentiment.toFixed(3) %>
+                                                    </span> |
+                                                    Confidence: <span class="font-bold">
+                                                        <%= (article.confidence * 100).toFixed(1) %>%
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <% }) %>
+                                    </div>
+                                </div>
+                                <% } %>
+                                    <% } else { %>
+                                        <p class="text-gray-500">Sentiment analysis not available</p>
+                                        <% } %>
+                    </div>
+
+                    <!-- Price Forecast Card -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                            <i class="fas fa-crystal-ball text-purple-600 mr-3"></i>Price Forecasts
+                        </h2>
+                        <% if (data.forecast && (data.forecast.forecast_values_arima ||
+                            data.forecast.forecast_values_lstm)) { %>
+                            <div class="space-y-6">
+                                <!-- Model Comparison Summary -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- ARIMA Summary -->
+                                    <% if (data.forecast.summary_arima) { %>
+                                        <div
+                                            class="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200">
+                                            <h4 class="font-bold text-blue-800 mb-3">ARIMA Model</h4>
+                                            <div class="grid grid-cols-3 gap-2 text-center">
+                                                <div>
+                                                    <div class="text-lg font-bold text-gray-800">$<%=
+                                                            data.forecast.summary_arima.latest_price.toFixed(2) %>
+                                                    </div>
+                                                    <div class="text-xs text-gray-600">Current</div>
+                                                </div>
+                                                <div>
+                                                    <div
+                                                        class="text-lg font-bold <%= data.forecast.summary_arima.predicted_trend === 'up' ? 'text-green-600' : 'text-red-600' %>">
+                                                        <%= data.forecast.summary_arima.predicted_trend==='up' ? '↗'
+                                                            : '↘' %>
+                                                    </div>
+                                                    <div class="text-xs text-gray-600">Trend</div>
+                                                </div>
+                                                <div>
+                                                    <div
+                                                        class="text-lg font-bold <%= data.forecast.summary_arima.avg_predicted_growth > 0 ? 'text-green-600' : 'text-red-600' %>">
+                                                        <%= data.forecast.summary_arima.avg_predicted_growth> 0 ? '+' :
+                                                            '' %><%= data.forecast.summary_arima.avg_predicted_growth %>
+                                                                %
+                                                    </div>
+                                                    <div class="text-xs text-gray-600">Growth</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+
+                                            <!-- LSTM Summary -->
+                                            <% if (data.forecast.summary_lstm) { %>
+                                                <div
+                                                    class="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-xl border border-purple-200">
+                                                    <h4 class="font-bold text-purple-800 mb-3">LSTM Model</h4>
+                                                    <div class="grid grid-cols-3 gap-2 text-center">
+                                                        <div>
+                                                            <div class="text-lg font-bold text-gray-800">$<%=
+                                                                    data.forecast.summary_lstm.latest_price.toFixed(2)
+                                                                    %>
+                                                            </div>
+                                                            <div class="text-xs text-gray-600">Current</div>
+                                                        </div>
+                                                        <div>
+                                                            <div
+                                                                class="text-lg font-bold <%= data.forecast.summary_lstm.predicted_trend === 'up' ? 'text-green-600' : 'text-red-600' %>">
+                                                                <%= data.forecast.summary_lstm.predicted_trend==='up'
+                                                                    ? '↗' : '↘' %>
+                                                            </div>
+                                                            <div class="text-xs text-gray-600">Trend</div>
+                                                        </div>
+                                                        <div>
+                                                            <div
+                                                                class="text-lg font-bold <%= data.forecast.summary_lstm.avg_predicted_growth > 0 ? 'text-green-600' : 'text-red-600' %>">
+                                                                <%= data.forecast.summary_lstm.avg_predicted_growth> 0 ?
+                                                                    '+' : '' %><%=
+                                                                        data.forecast.summary_lstm.avg_predicted_growth
+                                                                        %>%
+                                                            </div>
+                                                            <div class="text-xs text-gray-600">Growth</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                </div>
+
+                                <!-- ARIMA Forecast Values -->
+                                <% if (data.forecast.forecast_values_arima) { %>
+                                    <div>
+                                        <h3 class="font-semibold text-gray-700 mb-3 flex items-center">
+                                            <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                                            ARIMA Model (<%= data.forecast.forecast_days || 15 %>-day forecast)
+                                        </h3>
+                                        <div class="grid grid-cols-5 gap-2">
+                                            <% data.forecast.forecast_values_arima.slice(0, 10).forEach((price, index)=>
+                                                { %>
+                                                <div
+                                                    class="text-center p-3 bg-gradient-to-b from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                                                    <div class="font-bold text-sm text-gray-700">Day <%= index + 1 %>
+                                                    </div>
+                                                    <div class="text-lg font-bold text-blue-600">$<%= price.toFixed(2)
+                                                            %>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                        </div>
+                                        <% if (data.forecast.forecast_values_arima.length> 10) { %>
+                                            <div class="text-center mt-3">
+                                                <span class="text-sm text-gray-500">... and <%=
+                                                        data.forecast.forecast_values_arima.length - 10 %> more
+                                                        days</span>
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                    <% } %>
+
+                                        <!-- LSTM Forecast Values -->
+                                        <% if (data.forecast.forecast_values_lstm) { %>
+                                            <div>
+                                                <h3 class="font-semibold text-gray-700 mb-3 flex items-center">
+                                                    <i class="fas fa-brain text-purple-600 mr-2"></i>
+                                                    LSTM Model (<%= data.forecast.forecast_days || 15 %>-day forecast)
+                                                </h3>
+                                                <div class="grid grid-cols-5 gap-2">
+                                                    <% data.forecast.forecast_values_lstm.slice(0, 10).forEach((price,
+                                                        index)=> { %>
+                                                        <div
+                                                            class="text-center p-3 bg-gradient-to-b from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+                                                            <div class="font-bold text-sm text-gray-700">Day <%= index +
+                                                                    1 %>
+                                                            </div>
+                                                            <div class="text-lg font-bold text-purple-600">$<%=
+                                                                    price.toFixed(2) %>
+                                                            </div>
+                                                        </div>
+                                                        <% }) %>
+                                                </div>
+                                                <% if (data.forecast.forecast_values_lstm.length> 10) { %>
+                                                    <div class="text-center mt-3">
+                                                        <span class="text-sm text-gray-500">... and <%=
+                                                                data.forecast.forecast_values_lstm.length - 10 %> more
+                                                                days</span>
+                                                    </div>
+                                                    <% } %>
+                                            </div>
+                                            <% } %>
+                            </div>
+                            <% } else { %>
+                                <p class="text-gray-500">Forecast data not available</p>
+                                <% } %>
+                    </div>
+
+                    <!-- Forecast Chart Card -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                            <i class="fas fa-chart-area text-orange-600 mr-3"></i>Forecast Visualization
+                        </h2>
+                        <% if (data.charts && data.charts.length> 0 && data.charts[0]) { %>
+                            <div class="text-center">
+                                <img src="http://localhost:8000<%= data.charts[0] %>" alt="ARIMA Forecast Chart"
+                                    class="w-full rounded-xl shadow-lg border border-gray-200">
+                                <p class="text-sm text-gray-600 mt-3 font-medium">ARIMA Forecast Chart - <%=
+                                        data.forecast.forecast_days || 15 %> Day Prediction</p>
+                            </div>
+                            <% } else { %>
+                                <div class="text-center py-8">
+                                    <i class="fas fa-chart-line text-gray-300 text-4xl mb-3"></i>
+                                    <p class="text-gray-500">Chart generation in progress...</p>
+                                </div>
+                                <% } %>
+                    </div>
+                </div>
+
+                <!-- Company Overview Card -->
+                <% if (data.company_overview) { %>
+                    <div class="mt-6 bg-white rounded-xl shadow-lg p-6">
+                        <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                            <i class="fas fa-building text-blue-600 mr-3"></i>Company Overview
+                        </h2>
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
+                            <div class="text-gray-700 leading-relaxed whitespace-pre-line text-lg">
+                                <%= data.company_overview %>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+
+                        <!-- AI Market Intelligence Report -->
+                        <% if (data.summary) { %>
+                            <div class="mt-6 bg-white rounded-xl shadow-lg p-6">
+                                <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                                    <i class="fas fa-robot text-indigo-600 mr-3"></i>AI Market Intelligence Report
+                                </h2>
+                                <div
+                                    class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-200">
+                                    <div class="text-gray-700 leading-relaxed text-lg">
+                                        <% let lines=data.summary.split('\n'); lines.forEach(line=> {
+                                            let trimmedLine = line.trim();
+                                            if (trimmedLine.startsWith('## ')) {
+                                            %>
+                                            <h3 class="text-xl font-bold text-gray-800 mt-4 mb-2">
+                                                <%= trimmedLine.substring(3) %>
+                                            </h3>
+                                            <% } else if (trimmedLine.startsWith('### ')) {
                 %>
                             <h4 class="text-lg font-semibold text-gray-700 mt-3 mb-1"><%= trimmedLine.substring(4) %></h4>
                 <% 
@@ -383,38 +557,36 @@
                 <% 
                             } else {
                 %>
-                            <p class="mb-2"><%- trimmedLine.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') %></p>
-                <% 
-                            }
-                        } else if (trimmedLine) {
-                            let formattedLine = trimmedLine.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-                %>
-                            <p class="mb-2"><%- formattedLine %></p>
-                <% 
-                        }
-                    });
-                %>
-            </div>
-        </div>
-    </div>
-<% } %>
+                            <p class="mb-2"><%- trimmedLine.replace(/\*\*(.*?)\*\*/g, ' <b>$1</b>') %></p>
+                                                <% } } else if (trimmedLine) { let
+                                                    formattedLine=trimmedLine.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>' );
+                                                    %>
+                                                    <p class="mb-2"><%- formattedLine %></p>
+                                                    <% } }); %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
 
-        <!-- Footer -->
-        <div class="mt-8 text-center py-6">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="flex items-center justify-center mb-4">
-                    <i class="fas fa-chart-line text-blue-600 text-2xl mr-3"></i>
-                    <h3 class="text-xl font-bold text-gray-800">InsightInvest AI</h3>
-                </div>
-                <p class="text-gray-600 mb-4">Powered by advanced AI models and real-time market data</p>
-                <div class="flex justify-center space-x-6 text-sm text-gray-500">
-                    <span><i class="fas fa-brain mr-1"></i> Multi-Agent Analysis</span>
-                    <span><i class="fas fa-chart-line mr-1"></i> ARIMA Forecasting</span>
-                    <span><i class="fas fa-heart mr-1"></i> Sentiment Analysis</span>
-                    <span><i class="fas fa-robot mr-1"></i> AI Report Generation</span>
-                </div>
-            </div>
-        </div>
+                                <!-- Footer -->
+                                <div class="mt-8 text-center py-6">
+                                    <div class="bg-white rounded-xl shadow-lg p-6">
+                                        <div class="flex items-center justify-center mb-4">
+                                            <i class="fas fa-chart-line text-blue-600 text-2xl mr-3"></i>
+                                            <h3 class="text-xl font-bold text-gray-800">StockSentry</h3>
+                                        </div>
+                                        <p class="text-gray-600 mb-4">Powered by Sigan Flipr Hackathon 2025
+                                        </p>
+                                        <div class="flex justify-center space-x-6 text-sm text-gray-500">
+                                            <span><i class="fas fa-brain mr-1"></i> Multi-Agent Analysis</span>
+                                            <span><i class="fas fa-chart-line mr-1"></i> ARIMA && LSTM
+                                                Forecasting</span>
+                                            <span><i class="fas fa-heart mr-1"></i> Sentiment Analysis</span>
+                                            <span><i class="fas fa-robot mr-1"></i> AI Report Generation</span>
+                                        </div>
+                                    </div>
+                                </div>
     </div>
 </body>
+
 </html>

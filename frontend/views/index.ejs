@@ -4,39 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <title>StockSentry - AI Financial Research</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --ocean-blue: #0F4C75;
-            --light-blue: #3282B8;
-            --coral: #FF6B6B;
-            --mint: #4ECDC4;
-            --slate: #495057;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .ocean-gradient-bg {
-            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--light-blue) 50%, var(--mint) 100%);
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        .card-shadow {
-            box-shadow: 0 20px 25px -5px rgba(15, 76, 117, 0.1), 0 10px 10px -5px rgba(15, 76, 117, 0.04);
+        ::-webkit-scrollbar-thumb {
+            background: #FFA500;
+            border-radius: 10px;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--coral) 0%, #e55a5a 100%);
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #e55a5a 0%, var(--coral) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF8C00;
         }
 
         /* Loading overlay */
         #loadingOverlay {
-            background: rgba(15, 20, 30, 0.85);
+            background: rgba(0, 0, 0, 0.85);
             position: fixed;
             inset: 0;
             display: none;
@@ -54,83 +44,72 @@
     </style>
 </head>
 
-<body class="ocean-gradient-bg min-h-screen flex items-center justify-center">
-    <div class="container mx-auto p-4 max-w-2xl">
-        <div class="bg-white rounded-2xl card-shadow p-8 border border-opacity-20" style="border-color: var(--slate);">
-            <div class="text-center mb-8">
-                <h1 class="text-5xl font-bold text-[#0F4C75] mb-3">
-                    <i class="fas fa-chart-line text-[#FF6B6B] mr-3"></i> StockSentry
-                </h1>
-                <p class="text-[#495057] text-lg">AI-Powered Financial Research & Analysis</p>
+<body class="bg-gray-900 text-white font-sans antialiased min-h-screen flex items-center justify-center p-4">
+    <div
+        class="w-full max-w-lg bg-white bg-opacity-10 backdrop-blur-lg border border-white border-opacity-20 rounded-3xl p-8 shadow-2xl">
+
+        <!-- Logo + Title -->
+        <div class="text-center mb-6">
+            <div
+                class="w-24 h-24 mx-auto bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-400 rounded-full flex items-center justify-center shadow-lg">
+                <svg class="w-12 h-12 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path d="M12 2v20m10-10H2" />
+                </svg>
             </div>
-
-            <% if (typeof error !=='undefined' ) { %>
-                <div class="bg-[#4ECDC4] border border-opacity-30 rounded-xl p-4 mb-6"
-                    style="border-color: var(--coral);">
-                    <div class="flex items-center">
-                        <i class="fas fa-exclamation-triangle text-[#FF6B6B] mr-3"></i>
-                        <p class="text-[#FF6B6B] font-medium">
-                            <%= error %>
-                        </p>
-                    </div>
-                </div>
-                <% } %>
-
-                    <!-- 🔍 Form -->
-                    <form action="/analyze" method="POST" id="analyzeForm" class="space-y-6">
-                        <div class="relative">
-                            <label for="ticker" class="block text-sm font-semibold text-[#0F4C75] mb-3">
-                                Stock Ticker Symbol
-                            </label>
-                            <input type="text" id="ticker" name="ticker"
-                                placeholder="Enter ticker (e.g., TSLA, AAPL, MSFT)"
-                                class="w-full p-4 border-2 rounded-xl focus:ring-2 focus:ring-opacity-50 transition-all duration-300"
-                                style="border-color: var(--slate);" autocomplete="off" required>
-                            <div id="ticker-dropdown"
-                                class="absolute z-10 w-full mt-1 bg-white rounded-xl shadow-lg border border-opacity-20 hidden"
-                                style="border-color: var(--slate); max-height: 200px; overflow-y: auto;">
-                            </div>
-                        </div>
-
-                        <button type="submit"
-                            class="w-full btn-primary text-white font-bold py-4 px-8 rounded-xl flex items-center justify-center text-lg">
-                            <i class="fas fa-search mr-3"></i> Analyze Stock
-                        </button>
-                    </form>
-
-                    <div class="mt-8 text-center">
-                        <div class="flex justify-center space-x-6 text-sm text-[#495057]">
-                            <span class="flex items-center">
-                                <i class="fas fa-brain text-[#FF6B6B] mr-2"></i> Made by Sigan, for Flipr Hackathon 2025
-                            </span>
-                            <span class="flex items-center">
-                                <i class="fas fa-clock text-[#FF6B6B] mr-2"></i> Real-time Data
-                            </span>
-                            <span class="flex items-center">
-                                <i class="fas fa-chart-line text-[#FF6B6B] mr-2"></i> Multi-Agent
-                            </span>
-                        </div>
-                    </div>
+            <h1 class="mt-4 text-4xl font-extrabold text-orange-400">StockSentry</h1>
+            <p class="text-gray-400">AI-Powered Financial Research & Analysis</p>
         </div>
+
+        <!-- Error Message -->
+        <% if (typeof error !=='undefined' ) { %>
+            <div class="bg-red-600 text-white text-sm p-3 rounded-lg mb-6 flex items-center justify-center">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <%= error %>
+            </div>
+            <% } %>
+
+                <!-- 🔍 Form -->
+                <form action="/analyze" method="POST" id="analyzeForm" class="space-y-6 relative">
+                    <div class="relative">
+                        <label for="ticker" class="block text-sm font-semibold text-gray-300">Stock Ticker
+                            Symbol</label>
+                        <input type="text" id="ticker" name="ticker" placeholder="Enter ticker (e.g., TSLA, AAPL, MSFT)"
+                            class="w-full p-3 mt-2 bg-transparent border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                            autocomplete="off" required>
+                        <div id="ticker-dropdown"
+                            class="absolute left-0 right-0 mt-1 bg-gray-800 border border-gray-700 rounded-lg max-h-60 overflow-y-auto hidden z-10">
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-3 bg-gradient-to-r from-orange-500 to-black text-white font-semibold rounded-lg shadow-md hover:from-orange-400 hover:to-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500 flex items-center justify-center">
+                        <i class="fas fa-search mr-3"></i> Analyze Stock
+                    </button>
+                </form>
+
+                <!-- Footer -->
+                <div class="mt-8 text-center text-gray-400 text-sm">
+                    <p>Powered by <span class="font-semibold text-orange-400">Sigan</span> | Flipr Hackathon 2025</p>
+                </div>
     </div>
 
     <!-- 🔄 Loading Overlay -->
     <div id="loadingOverlay">
-        <div class="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-[#FF6B6B] mb-6"></div>
-        <p id="loadingText" class="text-2xl font-semibold tracking-wide">Analyzing Stock Data...</p>
-        <p class="text-sm text-gray-300 mt-2">This may take a few seconds</p>
+        <div class="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-orange-400 mb-6"></div>
+        <p id="loadingText" class="text-2xl font-semibold tracking-wide text-orange-300">Analyzing Stock Data...</p>
+        <p class="text-sm text-gray-400 mt-2">This may take a few seconds</p>
     </div>
 
+    <!-- Script -->
     <script>
-        // --- Loading screen ---
         const form = document.getElementById("analyzeForm");
         const loader = document.getElementById("loadingOverlay");
         const loadingText = document.getElementById("loadingText");
 
-        form.addEventListener("submit", (e) => {
+        form.addEventListener("submit", () => {
             const ticker = document.getElementById("ticker").value.trim().toUpperCase();
             if (!ticker) {
-                e.preventDefault();
                 alert("Please enter a valid stock ticker.");
                 return;
             }
@@ -138,150 +117,108 @@
             loader.classList.add("show");
         });
 
-        // --- Autocomplete dropdown (your original logic) ---
-       const popularTickers = [
+        // --- Autocomplete Dropdown ---
+        const popularTickers = [
             { symbol: 'AAPL', name: 'Apple Inc.' },
             { symbol: 'MSFT', name: 'Microsoft Corporation' },
             { symbol: 'GOOGL', name: 'Alphabet Inc. Class A' },
-            { symbol: 'GOOG', name: 'Alphabet Inc. Class C' },
             { symbol: 'AMZN', name: 'Amazon.com Inc.' },
             { symbol: 'TSLA', name: 'Tesla Inc.' },
             { symbol: 'META', name: 'Meta Platforms Inc.' },
             { symbol: 'NVDA', name: 'NVIDIA Corporation' },
             { symbol: 'NFLX', name: 'Netflix Inc.' },
-            { symbol: 'AMD', name: 'Advanced Micro Devices, Inc.' },
+            { symbol: 'AMD', name: 'Advanced Micro Devices' },
             { symbol: 'INTC', name: 'Intel Corporation' },
-            { symbol: 'ADBE', name: 'Adobe Inc.' },
             { symbol: 'ORCL', name: 'Oracle Corporation' },
-            { symbol: 'CSCO', name: 'Cisco Systems, Inc.' },
-            { symbol: 'IBM', name: 'International Business Machines' },
             { symbol: 'CRM', name: 'Salesforce, Inc.' },
-            { symbol: 'AVGO', name: 'Broadcom Inc.' },
-            { symbol: 'QCOM', name: 'Qualcomm Incorporated' },
-            { symbol: 'TXN', name: 'Texas Instruments, Inc.' },
-            { symbol: 'SAP', name: 'SAP SE' },
-            { symbol: 'SHOP', name: 'Shopify Inc.' },
-            { symbol: 'TWLO', name: 'Twilio Inc.' },
-            { symbol: 'UBER', name: 'Uber Technologies, Inc.' },
-            { symbol: 'LYFT', name: 'Lyft, Inc.' },
-            { symbol: 'ZM', name: 'Zoom Video Communications Inc.' },
-            { symbol: 'WORK', name: 'Slack Technologies' },
-            { symbol: 'SNAP', name: 'Snap Inc.' },
-            { symbol: 'SQ', name: 'Block, Inc. (Square)' },
-            { symbol: 'PAYPAL', name: 'PayPal Holdings, Inc.' },
-            { symbol: 'BIDU', name: 'Baidu, Inc.' },
-            { symbol: 'BABA', name: 'Alibaba Group Holding Ltd.' },
-            { symbol: 'WMT', name: 'Walmart Inc.' },
-            { symbol: 'KO', name: 'The Coca-Cola Company' },
-            { symbol: 'DIS', name: 'The Walt Disney Company' },
-            { symbol: 'JNJ', name: 'Johnson & Johnson' },
-            { symbol: 'PG', name: 'Procter & Gamble Co.' },
-            { symbol: 'NVDA', name: 'NVIDIA Corporation' },  // duplicate, you can remove one
+            { symbol: 'ADBE', name: 'Adobe Inc.' },
+            { symbol: 'CSCO', name: 'Cisco Systems, Inc.' },
             { symbol: 'PYPL', name: 'PayPal Holdings, Inc.' },
-            { symbol: 'NFLX', name: 'Netflix, Inc.' },        // duplicate, remove one
+            { symbol: 'SQ', name: 'Block, Inc.' },
+            { symbol: 'UBER', name: 'Uber Technologies, Inc.' },
+            { symbol: 'ZM', name: 'Zoom Video Communications' },
+            { symbol: 'DIS', name: 'The Walt Disney Company' },
+            { symbol: 'WMT', name: 'Walmart Inc.' },
             { symbol: 'V', name: 'Visa Inc.' },
             { symbol: 'MA', name: 'Mastercard Incorporated' },
             { symbol: 'JPM', name: 'JPMorgan Chase & Co.' },
             { symbol: 'BAC', name: 'Bank of America Corporation' },
-            { symbol: 'WFC', name: 'Wells Fargo & Company' },
-            { symbol: 'C', name: 'Citigroup Inc.' },
-            { symbol: 'GS', name: 'Goldman Sachs Group, Inc.' },
-            { symbol: 'BRK.B', name: 'Berkshire Hathaway Inc. (Class B)' },
+            { symbol: 'XOM', name: 'Exxon Mobil Corporation' },
+            { symbol: 'KO', name: 'The Coca-Cola Company' },
+            { symbol: 'PG', name: 'Procter & Gamble Co.' },
+            { symbol: 'NKE', name: 'Nike Inc.' },
+            { symbol: 'PEP', name: 'PepsiCo Inc.' },
+            { symbol: 'BABA', name: 'Alibaba Group Holding Ltd.' },
+            { symbol: 'INTU', name: 'Intuit Inc.' },
+            { symbol: 'SPOT', name: 'Spotify Technology S.A.' },
+            { symbol: 'SNAP', name: 'Snap Inc.' },
+            { symbol: 'LYFT', name: 'Lyft Inc.' },
+            { symbol: 'TWLO', name: 'Twilio Inc.' },
             { symbol: 'GE', name: 'General Electric Company' },
-            { symbol: 'XOM', name: 'Exxon Mobil Corporation' }
+            { symbol: 'BA', name: 'The Boeing Company' },
+            { symbol: 'CAT', name: 'Caterpillar Inc.' },
+            { symbol: 'CVX', name: 'Chevron Corporation' },
+            { symbol: 'T', name: 'AT&T Inc.' },
+            { symbol: 'VZ', name: 'Verizon Communications' },
+            { symbol: 'UPS', name: 'United Parcel Service' },
+            { symbol: 'FDX', name: 'FedEx Corporation' },
+            { symbol: 'GS', name: 'Goldman Sachs Group, Inc.' },
+            { symbol: 'C', name: 'Citigroup Inc.' },
+            { symbol: 'IBM', name: 'International Business Machines' },
+            { symbol: 'MMM', name: '3M Company' },
+            { symbol: 'AIG', name: 'American International Group' },
+            { symbol: 'BRK.B', name: 'Berkshire Hathaway Inc.' }
         ];
 
         const tickerInput = document.getElementById('ticker');
         const dropdown = document.getElementById('ticker-dropdown');
-        let selectedIndex = -1;
         let searchTimeout = null;
 
         function debounce(func, wait) {
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(searchTimeout);
-                    func(...args);
-                };
+            return (...args) => {
                 clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(later, wait);
+                searchTimeout = setTimeout(() => func(...args), wait);
             };
         }
 
-        async function searchTickers(query) {
-            if (query.length < 1) {
+        function showDropdown(matches) {
+            if (matches.length === 0) {
                 dropdown.classList.add('hidden');
                 return;
             }
 
-            try {
-                dropdown.innerHTML = `
-          <div class="px-4 py-3 text-center text-gray-500">
-            <i class="fas fa-spinner fa-spin text-[#FF6B6B] mr-2"></i> Searching...
-          </div>`;
-                dropdown.classList.remove('hidden');
-
-                const response = await fetch(`http://localhost:8000/search-tickers?q=${encodeURIComponent(query)}`);
-                const data = await response.json();
-                const tickers = data.tickers || [];
-
-                if (tickers.length === 0) {
-                    dropdown.innerHTML = `<div class="px-4 py-3 text-center text-gray-500">
-            <i class="fas fa-search text-[#FF6B6B] mr-2"></i>No results found
-          </div>`;
-                    return;
-                }
-
-                dropdown.innerHTML = tickers.map((t, i) => `
-          <div class="dropdown-item px-4 py-3 cursor-pointer hover:bg-gray-100 border-b" 
-               data-symbol="${t.symbol}" data-index="${i}">
-            <div class="flex justify-between">
-              <div>
-                <div class="font-bold text-[#FF6B6B]">${t.symbol}</div>
-                <div class="text-sm text-gray-600">${t.name}</div>
-              </div>
-              <i class="fas fa-arrow-right text-[#FF6B6B] opacity-50"></i>
-            </div>
-          </div>`).join('');
-
-            } catch (error) {
-                console.error("Search failed:", error);
-                const matches = popularTickers.filter(t =>
-                    t.symbol.startsWith(query.toUpperCase()) || t.name.toUpperCase().includes(query.toUpperCase())
-                ).slice(0, 8);
-
-                dropdown.innerHTML = matches.map((t, i) => `
-          <div class="dropdown-item px-4 py-3 cursor-pointer hover:bg-gray-100 border-b" 
-               data-symbol="${t.symbol}" data-index="${i}">
-            <div class="flex justify-between">
-              <div>
-                <div class="font-bold text-[#FF6B6B]">${t.symbol}</div>
-                <div class="text-sm text-gray-600">${t.name}</div>
-              </div>
-              <i class="fas fa-arrow-right text-[#FF6B6B] opacity-50"></i>
-            </div>
-          </div>`).join('');
-            }
+            dropdown.innerHTML = matches.map(t => `
+        <div class="px-4 py-2 cursor-pointer hover:bg-gray-700" data-symbol="${t.symbol}">
+          <div class="font-semibold text-orange-400">${t.symbol}</div>
+          <div class="text-sm text-gray-400">${t.name}</div>
+        </div>`).join('');
+            dropdown.classList.remove('hidden');
         }
 
-        const debouncedSearch = debounce(searchTickers, 300);
-        tickerInput.addEventListener('input', function () {
-            const query = this.value.trim();
-            debouncedSearch(query);
-        });
+        const debouncedSearch = debounce(query => {
+            if (!query) {
+                dropdown.classList.add('hidden');
+                return;
+            }
+            const matches = popularTickers.filter(t =>
+                t.symbol.startsWith(query.toUpperCase()) ||
+                t.name.toUpperCase().includes(query.toUpperCase())
+            ).slice(0, 8);
+            showDropdown(matches);
+        }, 250);
 
-        dropdown.addEventListener('click', function (e) {
-            const item = e.target.closest('.dropdown-item');
+        tickerInput.addEventListener('input', e => debouncedSearch(e.target.value));
+        dropdown.addEventListener('click', e => {
+            const item = e.target.closest('[data-symbol]');
             if (item) {
-                const symbol = item.getAttribute('data-symbol');
-                tickerInput.value = symbol;
+                tickerInput.value = item.dataset.symbol;
                 dropdown.classList.add('hidden');
             }
         });
 
-        document.addEventListener('click', function (e) {
-            if (!tickerInput.contains(e.target) && !dropdown.contains(e.target)) {
+        document.addEventListener('click', e => {
+            if (!tickerInput.contains(e.target) && !dropdown.contains(e.target))
                 dropdown.classList.add('hidden');
-            }
         });
     </script>
 </body>
