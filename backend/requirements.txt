@@ -1,21 +1,11 @@
 # Web framework and middleware
 fastapi
-uvicorn
+uvicorn[standard]
 python-multipart
-
 python-dotenv
 pydantic
 typing-extensions
-
-# Environment variables
-
-
-# CORS and static files
 starlette
-
-# Async and logging
-asyncio
-logging
 
 # Math, statistics, and ML
 numpy
@@ -30,9 +20,6 @@ beautifulsoup4
 # Utility libraries
 Pillow
 textwrap3
-
-
-# Random number and regex
 regex
 
 # Financial data
@@ -47,16 +34,7 @@ langgraph
 langchain-core
 langchain-google-genai
 google-generativeai
+
 # External API clients
 google-search-results
 gradio_client
-
-# Custom modules (ensure these are in your project directory)
-# graph_agent1
-# helperfunctions
-# arima
-# newsextractor
-# sentimentest
-
-# Optional: warnings suppression
-#warnings
