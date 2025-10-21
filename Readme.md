@@ -1,16 +1,12 @@
-**Project Name:** StockSentry  
-**Hackathon:** *Online Hackathon 29.2 by Flipr*  
-**Team Project:** StockSentry – Multi-Agent AI-driven Financial Analysis and Forecasting System  
-**Team Name:** Sigan  
+**Project Name:** StockSentry
+**Hackathon:** *Online Hackathon 29.2 by Flipr*
+**Team Project:** StockSentry – Multi-Agent AI-driven Financial Analysis and Forecasting System
+**Team Name:** Sigan
 
 # StockSentry: Multi-Agent AI Financial Intelligence System
 
-
-
 **StockSentry** is an **AI-driven multi-agent stock analysis system** that autonomously performs **fundamental analysis**, **news sentiment evaluation**, and **price forecasting** using **ARIMA** and **LSTM** models.
 Built on **LangGraph**, it combines **live financial data**, **RoBERTa sentiment analysis**, and **Hugging Face forecasting**, powered by a **FastAPI backend** and **EJS frontend**, deployed on **Render**.
-
-
 
 ## Key Features: Multi-Agent Financial Intelligence System
 
@@ -35,17 +31,16 @@ Built on **LangGraph**, it combines **live financial data**, **RoBERTa sentiment
 Below are the evaluation metrics for the **LSTM-based stock price forecasting model** used within **StockSentry**, tested on multiple large-cap tickers:
 
 | **Ticker** | **RMSE** | **MAE** | **R² Score** |
-| ---------- | -------- | ------- | ------------ |
-| **AAPL**   | 4.49     | 3.54    | 0.82         |
-| **MSFT**   | 9.07     | 7.30    | 0.63         |
-| **GOOGL**  | 4.84     | 3.72    | 0.82         |
-| **AMZN**   | 6.26     | 4.81    | 0.87         |
-| **META**   | 8.92     | 6.74    | 0.90         |
-
+| ---------------- | -------------- | ------------- | ------------------- |
+| **AAPL**   | 4.49           | 3.54          | 0.82                |
+| **MSFT**   | 9.07           | 7.30          | 0.63                |
+| **GOOGL**  | 4.84           | 3.72          | 0.82                |
+| **AMZN**   | 6.26           | 4.81          | 0.87                |
+| **META**   | 8.92           | 6.74          | 0.90                |
 
 ---
 
-##  Steps to Run Locally
+## Steps to Run Locally
 
 ### 1. Clone the Repository
 
@@ -68,6 +63,7 @@ Then launch the backend server using **Uvicorn**:
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
+
 ### 3. Start the Frontend (EJS + Express)
 
 In a **new terminal window**:
@@ -77,8 +73,36 @@ cd frontend
 npm install
 npm start
 ```
+
 The frontend will start at:
 👉 [http://localhost:3000](http://localhost:3000)
+
+### 4. Environment files required
+
+```bash
+cd backend
+type nul > .env
+on windows
+touch .env
+on ubuntu
+```
+
+### Contents of .env file
+
+```bash
+# Set to "True" if using Google Vertex AI, otherwise "False"
+GOOGLE_GENAI_USE_VERTEXAI=
+
+# API key for Google Generative AI (Gemini API)
+GOOGLE_API_KEY=
+
+# API key for SerpAPI (used for search integrations)
+SERPAPI_KEY=
+
+# API key for Hugging Face (for model inference or embeddings)
+HUGGINGFACE_API_KEY=
+```
+
 
 ## Live Demo (Hosted on Render)
 
@@ -115,6 +139,3 @@ Planned improvements include:
 > After the first request, all subsequent interactions run smoothly.
 
 ---
-
-
-
